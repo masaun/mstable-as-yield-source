@@ -19,7 +19,14 @@
     "@openzeppelin/test-helpers": "^0.5.10",
     "@truffle/hdwallet-provider": "^1.2.0",
     "dotenv": "^8.2.0",
-    "eth-block-tracker": "^4.4.3"
+    "eth-block-tracker": "^4.4.3",
+    "@boringcrypto/boring-solidity": "boringcrypto/BoringSolidity#e06e943",
+    "@openzeppelin/contracts-upgradeable": "3.4.0",
+    "@pooltogether/fixed-point": "1.0.0-beta.2",
+    "@pooltogether/pooltogether-rng-contracts": "1.0.0",
+    "@pooltogether/uniform-random-number": "1.0.0-beta.1",
+    "deploy-eip-1820": "1.0.0",
+    "sortition-sum-tree-factory": "0.1.0"
   },
   "devDependencies": {}
 }
