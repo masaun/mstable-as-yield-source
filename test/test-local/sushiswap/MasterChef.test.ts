@@ -57,19 +57,13 @@ describe("MasterChef", function () {
   context("With ERC/LP token added to the field", function () {
     beforeEach(async function () {
       this.lp = await this.ERC20Mock.deploy("LPToken", "LP", "10000000000")
-
       await this.lp.transfer(this.alice.address, "1000")
-
       await this.lp.transfer(this.bob.address, "1000")
-
       await this.lp.transfer(this.carol.address, "1000")
 
       this.lp2 = await this.ERC20Mock.deploy("LPToken2", "LP2", "10000000000")
-
       await this.lp2.transfer(this.alice.address, "1000")
-
       await this.lp2.transfer(this.bob.address, "1000")
-
       await this.lp2.transfer(this.carol.address, "1000")
     })
 
@@ -81,13 +75,10 @@ describe("MasterChef", function () {
       await this.chef.add("100", this.lp.address, true)
 
       await this.lp.connect(this.bob).approve(this.chef.address, "1000")
-
       await this.chef.connect(this.bob).deposit(0, "100")
-
       expect(await this.lp.balanceOf(this.bob.address)).to.equal("900")
 
       await this.chef.connect(this.bob).emergencyWithdraw(0)
-
       expect(await this.lp.balanceOf(this.bob.address)).to.equal("1000")
     })
 
