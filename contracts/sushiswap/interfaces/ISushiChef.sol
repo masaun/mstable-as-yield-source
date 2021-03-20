@@ -2,7 +2,7 @@
 pragma solidity 0.6.12;
 pragma experimental ABIEncoderV2;
 
-import "interfaces/erc20/IERC20.sol";
+import "./IERC20.sol";
 
 // Info of each pool.
 struct PoolInfo {
