@@ -20,7 +20,6 @@
     "@truffle/hdwallet-provider": "^1.2.0",
     "dotenv": "^8.2.0",
     "eth-block-tracker": "^4.4.3",
-    "@boringcrypto/boring-solidity": "boringcrypto/BoringSolidity#e06e943",
     "@openzeppelin/contracts-upgradeable": "3.4.0",
     "@pooltogether/fixed-point": "1.0.0-beta.2",
     "@pooltogether/pooltogether-rng-contracts": "1.0.0",
