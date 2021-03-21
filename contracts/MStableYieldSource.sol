@@ -22,10 +22,13 @@ contract MStableYieldSource is IYieldSource {
     mapping(address => uint256) public balances;
 
     /// @notice Interface for the Yield-bearing mUSD by mStable
-    IERC20 public mUSD;
+    IERC20 public mUSD;     /// [Note]: On the assumption that mUSD is minted from the minting page in advance
     IMasset public mAsset;
     ISavingsContractV2 public save;
     //IMStableHelper public helper;
+
+    address MUSD;
+    address SAVE;
 
     /// @notice Initializes the Yield Service with the Compound cToken
     /// @param _mAsset Address of the Compound cToken interface
@@ -34,21 +37,24 @@ contract MStableYieldSource is IYieldSource {
         mAsset = _mAsset;
         save = _save;
 
+        MUSD = address(mUSD);
+        SAVE = address(save);
+
         emit MAssetYieldSourceInitialized(address(mUSD));
     }
 
     /// @notice Returns the ERC20 asset token used for deposits.
-    /// @return address of SushiToken to be deposited
+    /// @return address of mUSD to be deposited
     function token() public override view returns (address) {
-        address testAddr;
-        return testAddr;
+        return MUSD;
     }
 
     /// @notice Returns the total balance (in asset tokens).  This includes the deposits and interest.
-    /// @return The underlying (SushiToken) balance of asset tokens (xSushi)
+    /// @return The underlying (mUSD) balance of asset tokens (saved-mUSD)
     function balanceOf(address addr) external override returns (uint256) {
-        uint256 test;
-        return test;
+        uint256 totalUnderlying = save.balanceOfUnderlying(address(this));
+        uint256 total = save.creditBalances(address(this));
+        return balances[addr].mul(totalUnderlying).div(total);
     }
 
     /// @notice Supplies asset tokens to the yield source.
