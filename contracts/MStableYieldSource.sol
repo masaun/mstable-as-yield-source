@@ -21,15 +21,21 @@ contract MStableYieldSource is IYieldSource {
 
     mapping(address => uint256) public balances;
 
-    /// @notice Interface for the Yield-bearing cToken by Compound
-    //MAssetInterface public cToken;
+    /// @notice Interface for the Yield-bearing mUSD by mStable
+    IERC20 public mUSD;
+    IMasset public mAsset;
+    ISavingsContractV2 public save;
+    //IMStableHelper public helper;
 
     /// @notice Initializes the Yield Service with the Compound cToken
-    /// @param _cToken Address of the Compound cToken interface
-    // constructor (CTokenInterface _cToken) public {
-    //     cToken = _cToken;
-    //     emit CTokenYieldSourceInitialized(address(cToken));
-    // }
+    /// @param _mAsset Address of the Compound cToken interface
+    constructor (IERC20 _mUSD, IMasset _mAsset, ISavingsContractV2 _save) public {
+        mUSD = _mUSD;
+        mAsset = _mAsset;
+        save = _save;
+
+        emit MAssetYieldSourceInitialized(address(mUSD));
+    }
 
     /// @notice Returns the ERC20 asset token used for deposits.
     /// @return address of SushiToken to be deposited
