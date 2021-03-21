@@ -6,15 +6,30 @@ import { SafeMath } from "@openzeppelin/contracts/math/SafeMath.sol";
 
 import { IYieldSource } from "./pooltogether/protocol-yield-source-interface/IYieldSource.sol";
 
+import { IMasset } from "./mstable/mStable-contracts-v2.0.0/interfaces/IMasset.sol";
+//import { IMStableHelper } from "./mstable/mStable-contracts-v2.0.0/interfaces/IMStableHelper.sol";
+import { ISavingsContractV2 } from "./mstable/mStable-contracts-v2.0.0/interfaces/ISavingsContract.sol";
 
-/// @title Defines the functions used to interact with a yield source.  The Prize Pool inherits this contract.
+
+/// @title Defines the functions used to interact with a yield source. The Prize Pool inherits this contract.
 /// @dev THIS CONTRACT IS EXPERIMENTAL!  USE AT YOUR OWN RISK
 /// @notice Prize Pools subclasses need to implement this interface so that yield can be generated.
 contract MStableYieldSource is IYieldSource {
+    using SafeMath for uint256;
 
-    constructor() public {
-        /// [Todo]:
-    }
+    event MAssetYieldSourceInitialized(address indexed cToken);
+
+    mapping(address => uint256) public balances;
+
+    /// @notice Interface for the Yield-bearing cToken by Compound
+    //MAssetInterface public cToken;
+
+    /// @notice Initializes the Yield Service with the Compound cToken
+    /// @param _cToken Address of the Compound cToken interface
+    // constructor (CTokenInterface _cToken) public {
+    //     cToken = _cToken;
+    //     emit CTokenYieldSourceInitialized(address(cToken));
+    // }
 
     /// @notice Returns the ERC20 asset token used for deposits.
     /// @return address of SushiToken to be deposited
