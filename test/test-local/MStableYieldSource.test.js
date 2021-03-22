@@ -113,7 +113,7 @@ contract("MStableYieldSource", function(accounts) {
             }
         })
 
-        it("Deploy the PoolWithMultipleWinnersBuilder contract instance", async () => {
+        it("Create the PoolWithMultipleWinnersBuilder contract instance", async () => {
             /// Assign deployed-address of the PoolWithMultipleWinnersBuilder contract
             poolWithMultipleWinnersBuilder = await PoolWithMultipleWinnersBuilder.at(POOL_WITH_MULTIPLE_WINNERS_BUILDER, { from: deployer })
         })
@@ -125,7 +125,12 @@ contract("MStableYieldSource", function(accounts) {
                 yieldSourcePrizePoolConfig,
                 multipleWinnersConfig,
                 decimals
-            );
+            )
+        })
+
+        it("Retrieve the 'YieldSourcePrizePoolWithMultipleWinnersCreated' event of createYieldSourceMultipleWinners() method", async () => {
+            let event = await getEvents(poolWithMultipleWinnersBuilder, "YieldSourcePrizePoolWithMultipleWinnersCreated")
+            console.log('=== event of YieldSourcePrizePoolWithMultipleWinnersCreated ===', event)
         })
     })
 })
