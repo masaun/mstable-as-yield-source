@@ -7,6 +7,9 @@ const MStableYieldSource = artifacts.require("MStableYieldSource")
 const MUSDToken = artifacts.require("MUSDToken")
 const ISavingsContractV2 = artifacts.require("ISavingsContractV2")  /// [Note]: save contract also works as xmUSD
 const RNGMStableHarness = artifacts.require("RNGMStableHarness")
+const PoolWithMultipleWinnersBuilder = artifacts.require("PoolWithMultipleWinnersBuilder")
+//const PrizePool = artifacts.require("PrizePool")
+//const PrizeStrategy = artifacts.require("PrizeStrategy")
 
 /// Import deployed-addresses
 const contractAddressList = require("../../migrations/addressesList/contractAddress/contractAddress.js")
@@ -37,6 +40,7 @@ contract("MStableYieldSource", function(accounts) {
     let RNG_MSTABLE_HARNESS
 
     /// Global parameters for PoolTogether
+    let yieldSourcePrizePoolConfig
     let multipleWinnersConfig
 
     async function getEvents(contractInstance, eventName) {
@@ -81,6 +85,14 @@ contract("MStableYieldSource", function(accounts) {
     })
 
     describe("Preparations", () => {
+        it("Setup parameter of yieldSourcePrizePool", async () => {
+            yieldSourcePrizePoolConfig = {
+                yieldSource: MSTABLE_YIELD_SOURCE,
+                maxExitFeeMantissa: web3.utils.toWei("0.5", "ether"),
+                maxTimelockDuration: 1000,
+            }
+        })
+
         it("Setup parameter of multipleWinners", async () => {
             multipleWinnersConfig = {
                 proxyAdmin: "0x0000000000000000000000000000000000000000",
