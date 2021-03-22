@@ -17,7 +17,7 @@ import { ISavingsContractV2 } from "./mstable/mStable-contracts-v2.0.0/interface
 contract MStableYieldSource is IYieldSource {
     using SafeMath for uint256;
 
-    event MAssetYieldSourceInitialized(address indexed cToken);
+    event ImUSDYieldSourceInitialized(address indexed save);
 
     /// @notice this balance indicates "imUSD" balance of specified address
     mapping(address => uint256) public balances;
@@ -31,17 +31,15 @@ contract MStableYieldSource is IYieldSource {
     address MUSD;
     address SAVE;
 
-    /// @notice Initializes the Yield Service with the Compound cToken
-    /// @param _mAsset Address of the Compound cToken interface
-    constructor (IERC20 _mUSD, IMasset _mAsset, ISavingsContractV2 _save) public {
+    constructor (IERC20 _mUSD, ISavingsContractV2 _save) public {
         mUSD = _mUSD;
-        mAsset = _mAsset;
+        //mAsset = _mAsset;
         save = _save;
 
         MUSD = address(mUSD);
         SAVE = address(save);
 
-        emit MAssetYieldSourceInitialized(address(mUSD));
+        emit ImUSDYieldSourceInitialized(SAVE);
     }
 
     /// @notice Returns the ERC20 asset token used for deposits.
