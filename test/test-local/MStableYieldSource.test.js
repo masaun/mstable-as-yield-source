@@ -31,6 +31,7 @@ contract("MStableYieldSource", function(accounts) {
     let mUSD
     let save
     let rngMStableHarness
+    let poolWithMultipleWinnersBuilder
 
     /// Global variable for each contract addresses
     let MSTABLE_YIELD_SOURCE
@@ -38,10 +39,12 @@ contract("MStableYieldSource", function(accounts) {
     let SAVE = contractAddressList["Mainnet"]["mStable"]["mUSD SAVE (imUSD)"]
     let NEXUS = contractAddressList["Mainnet"]["mStable"]["Nexus"]
     let RNG_MSTABLE_HARNESS
+    let POOL_WITH_MULTIPLE_WINNERS_BUILDER = contractAddressList["Mainnet"]["PoolTogether"]["PoolWithMultipleWinnersBuilder"]
 
     /// Global parameters for PoolTogether
     let yieldSourcePrizePoolConfig
     let multipleWinnersConfig
+    let decimals = 9
 
     async function getEvents(contractInstance, eventName) {
         /// [Note]: Retrieve an event log of eventName (via web3.js v1.0.0)
@@ -109,6 +112,20 @@ contract("MStableYieldSource", function(accounts) {
                 numberOfWinners: 1,
             }
         })
+
+        it("Deploy the PoolWithMultipleWinnersBuilder contract instance", async () => {
+            /// Assign deployed-address of the PoolWithMultipleWinnersBuilder contract
+            poolWithMultipleWinnersBuilder = await PoolWithMultipleWinnersBuilder.at(POOL_WITH_MULTIPLE_WINNERS_BUILDER, { from: deployer })
+        })
     })
 
+    describe("Create yield source multiple winners", () => {
+        it("Execute createYieldSourceMultipleWinners() method", async () => {
+            let txReceipt = await poolWithMultipleWinnersBuilder.createYieldSourceMultipleWinners(
+                yieldSourcePrizePoolConfig,
+                multipleWinnersConfig,
+                decimals
+            );
+        })
+    })
 })
