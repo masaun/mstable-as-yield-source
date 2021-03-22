@@ -6,6 +6,7 @@ const web3 = new Web3(new Web3.providers.WebsocketProvider('ws://localhost:8545'
 const MStableYieldSource = artifacts.require("MStableYieldSource")
 const MUSDToken = artifacts.require("MUSDToken")
 const ISavingsContractV2 = artifacts.require("ISavingsContractV2")  /// [Note]: save contract also works as xmUSD
+const RNGMStableHarness = artifacts.require("RNGMStableHarness")
 
 /// Import deployed-addresses
 const contractAddressList = require("../../migrations/addressesList/contractAddress/contractAddress.js")
@@ -26,12 +27,14 @@ contract("MStableYieldSource", function(accounts) {
     let mStableYieldSource
     let mUSD
     let save
+    let rngMStableHarness
 
     /// Global variable for each contract addresses
     let MSTABLE_YIELD_SOURCE
     let MUSD
     let SAVE = contractAddressList["Mainnet"]["mStable"]["mUSD SAVE (imUSD)"]
     let NEXUS = contractAddressList["Mainnet"]["mStable"]["Nexus"]
+    let RNG_MSTABLE_HARNESS
 
     async function getEvents(contractInstance, eventName) {
         /// [Note]: Retrieve an event log of eventName (via web3.js v1.0.0)
@@ -60,6 +63,11 @@ contract("MStableYieldSource", function(accounts) {
 
             /// [Note]: Currently, this is commentouted because of that it takes long time to retrieve the result of event in case of using mainnet-fork approach.
             // let event = await getEvents(mStableYieldSource, "ImUSDYieldSourceInitialized")
+        })
+
+        it("Deploy the RNGMStableHarness contract instance", async () => {
+            rngMStableHarness = await RNGMStableHarness.new({ from: deployer })
+            RNG_MSTABLE_HARNESS = rngMStableHarness.address
         })
 
         it("[Log]: Deployed-contracts addresses", async () => {
