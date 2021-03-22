@@ -46,18 +46,18 @@ $ npm run migrate:local
 <br>
 
 ### ③ Test (Mainnet-fork approach)
-- 1: Start ganache-cli
+- 1: Start ganache-cli with mainnet-fork
 ```
-$ ganache-cli -d
+$ ganache-cli --fork https://mainnet.infura.io/v3/{YOUR INFURA KEY}@{BLOCK_NUMBER}
 ```
 (※ `-d` option is the option in order to be able to use same address on Ganache-CLI every time)
 
 <br>
 
 - 2: Execute test of the smart-contracts (on the local)
-  - Test for the Something contract
-    `$ npm run test:Something`
-    ($ truffle test ./test/test-local/Something.test.js)
+  - Test for the MStableYieldSource contract
+    `$ npm run test:MStableYieldSource`
+    ($ truffle test ./test/test-local/MStableYieldSource.test.js)
 
 <br>
 
