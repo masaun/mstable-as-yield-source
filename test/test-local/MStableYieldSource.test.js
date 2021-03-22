@@ -33,6 +33,17 @@ contract("MStableYieldSource", function(accounts) {
     let SAVE = contractAddressList["Mainnet"]["mStable"]["mUSD SAVE (imUSD)"]
     let NEXUS = contractAddressList["Mainnet"]["mStable"]["Nexus"]
 
+    async function getEvents(contractInstance, eventName) {
+        /// [Note]: Retrieve an event log of eventName (via web3.js v1.0.0)
+        let events = await contractInstance.getPastEvents(eventName, {
+            filter: {},  /// [Note]: If "index" is used for some event property, index number is specified
+            fromBlock: 0,
+            toBlock: 'latest'
+        })
+        console.log(`\n=== [Event log]: ${ eventName } ===`, events[0].returnValues)
+        return events[0].returnValues
+    } 
+
     describe("Setup smart-contracts", () => {
         it("Deploy the mUSD contract instance", async () => {
             mUSD = await MUSDToken.new({ from: deployer })
@@ -47,19 +58,14 @@ contract("MStableYieldSource", function(accounts) {
             mStableYieldSource = await MStableYieldSource.new(MUSD, SAVE, { from: deployer })
             MSTABLE_YIELD_SOURCE = mStableYieldSource.address
 
-            /// [Note]: Retrieve an event log of "XMStableYieldSourceInitialized" (via web3.js v1.0.0)
-            // let events = await mStableYieldSource.getPastEvents("ImUSDYieldSourceInitialized", {
-            //     filter: {},  /// [Note]: If "index" is used for some event property, index number is specified
-            //     fromBlock: 0,
-            //     toBlock: 'latest'
-            // })
-            // console.log("\n=== [Event log]: ImUSDYieldSourceInitialized ===", events[0].returnValues)
+            /// [Note]: Currently, this is commentouted because of that it takes long time to retrieve the result of event in case of using mainnet-fork approach.
+            // let event = await getEvents(mStableYieldSource, "ImUSDYieldSourceInitialized")
         })
 
         it("[Log]: Deployed-contracts addresses", async () => {
             console.log("\n=== MUSD ===", MUSD)
-            console.log("\n=== SAVE ===", SAVE)
-            console.log("\n=== MSTABLE_YIELD_SOURCE ===", MSTABLE_YIELD_SOURCE)
+            console.log("=== SAVE ===", SAVE)
+            console.log("=== MSTABLE_YIELD_SOURCE ===", MSTABLE_YIELD_SOURCE)
         })
     })
 
