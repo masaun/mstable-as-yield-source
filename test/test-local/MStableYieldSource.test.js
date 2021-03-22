@@ -36,6 +36,9 @@ contract("MStableYieldSource", function(accounts) {
     let NEXUS = contractAddressList["Mainnet"]["mStable"]["Nexus"]
     let RNG_MSTABLE_HARNESS
 
+    /// Global parameters for PoolTogether
+    let multipleWinnersConfig
+
     async function getEvents(contractInstance, eventName) {
         /// [Note]: Retrieve an event log of eventName (via web3.js v1.0.0)
         let events = await contractInstance.getPastEvents(eventName, {
@@ -74,6 +77,25 @@ contract("MStableYieldSource", function(accounts) {
             console.log("\n=== MUSD ===", MUSD)
             console.log("=== SAVE ===", SAVE)
             console.log("=== MSTABLE_YIELD_SOURCE ===", MSTABLE_YIELD_SOURCE)
+        })
+    })
+
+    describe("Preparations", () => {
+        it("Setup parameter of multipleWinners", async () => {
+            multipleWinnersConfig = {
+                proxyAdmin: "0x0000000000000000000000000000000000000000",
+                rngService: RNG_MSTABLE_HARNESS,
+                prizePeriodStart: 0,
+                prizePeriodSeconds: 100,
+                ticketName: "mUSD Pass",
+                ticketSymbol: "musdp",
+                sponsorshipName: "mUSD Sponsor",
+                sponsorshipSymbol: "musdsp",
+                ticketCreditLimitMantissa: web3.utils.toWei("0.1", "ether"),
+                ticketCreditRateMantissa: web3.utils.toWei("0.1", "ether"),
+                externalERC20Awards: [],
+                numberOfWinners: 1,
+            }
         })
     })
 
