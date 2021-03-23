@@ -49,8 +49,8 @@ contract("MStableYieldSource", function(accounts) {
     async function getEvents(contractInstance, eventName) {
         /// [Note]: Retrieve an event log of eventName (via web3.js v1.0.0)
         let events = await contractInstance.getPastEvents(eventName, {
-            filter: {},  /// [Note]: If "index" is used for some event property, index number is specified
-            fromBlock: 12091818,
+            filter: {},
+            fromBlock: 12091818,  /// [Note]: Please adjust "fromBlock" as near as the latest blockNumber. Otherwise, it takes long time to retrieve the result of events
             //fromBlock: 0,
             toBlock: 'latest'
         })
@@ -121,7 +121,7 @@ contract("MStableYieldSource", function(accounts) {
     })
 
     describe("Create yield source multiple winners", () => {
-        it("Execute createYieldSourceMultipleWinners() method", async () => {
+        it("Execute createYieldSourceMultipleWinners() method of the PoolWithMultipleWinnersBuilder contract", async () => {
             let txReceipt = await poolWithMultipleWinnersBuilder.createYieldSourceMultipleWinners(
                 yieldSourcePrizePoolConfig,
                 multipleWinnersConfig,
