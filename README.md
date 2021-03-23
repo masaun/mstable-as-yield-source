@@ -48,7 +48,7 @@ $ npm run migrate:local
 ### ③ Test (Mainnet-fork approach)
 - 1: Start ganache-cli with mainnet-fork
 ```
-$ ganache-cli --fork https://mainnet.infura.io/v3/{YOUR INFURA KEY}@{BLOCK_NUMBER}
+$ ganache-cli -d --fork https://mainnet.infura.io/v3/{YOUR INFURA KEY}@{BLOCK_NUMBER}
 ```
 (※ `-d` option is the option in order to be able to use same address on Ganache-CLI every time)
 

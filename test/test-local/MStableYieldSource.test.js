@@ -50,7 +50,8 @@ contract("MStableYieldSource", function(accounts) {
         /// [Note]: Retrieve an event log of eventName (via web3.js v1.0.0)
         let events = await contractInstance.getPastEvents(eventName, {
             filter: {},  /// [Note]: If "index" is used for some event property, index number is specified
-            fromBlock: 0,
+            fromBlock: 12091818,
+            //fromBlock: 0,
             toBlock: 'latest'
         })
         console.log(`\n=== [Event log]: ${ eventName } ===`, events[0].returnValues)
