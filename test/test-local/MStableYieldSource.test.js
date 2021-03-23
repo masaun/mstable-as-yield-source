@@ -18,6 +18,7 @@ const contractAddressList = require("../../migrations/addressesList/contractAddr
 /**
  * @notice - This is the test of MStableYieldSource.sol
  * @notice - [Execution command]: $ truffle test ./test/test-local/MStableYieldSource.test.js
+ * @notice - [Using mainnet-fork with Ganache-CLI and Infura]: Please reference from README
  */
 contract("MStableYieldSource", function(accounts) {
     /// Acccounts
@@ -52,7 +53,7 @@ contract("MStableYieldSource", function(accounts) {
         /// [Note]: Retrieve an event log of eventName (via web3.js v1.0.0)
         let events = await contractInstance.getPastEvents(eventName, {
             filter: {},
-            fromBlock: 12092362,  /// [Note]: Please specify the latest blockNumber (as long as you can) as "fromBlock". Otherwise, it takes long time to retrieve the result of events
+            fromBlock: 12092497,  /// [Note]: Please specify the latest blockNumber of mainnet as "fromBlock". Otherwise, it takes long time to retrieve the result of events
             //fromBlock: 0,
             toBlock: 'latest'
         })
@@ -138,6 +139,8 @@ contract("MStableYieldSource", function(accounts) {
             /// Assign each address from the event log retrieved above
             PRIZE_POOL = event.prizePool
             PRIZE_STORATEGY = event.prizeStrategy
+            console.log(`\n=== PRIZE_POOL: ${ PRIZE_POOL } ===`)
+            console.log(`=== PRIZE_STORATEGY: ${ PRIZE_STORATEGY } ===\n`)
         })
 
         it("Create instances of prizePool and prizeStrategy", async () => {
@@ -157,23 +160,30 @@ contract("MStableYieldSource", function(accounts) {
         })
 
         it("Underlying asset (mUSD) should be deposited to the PrizePool", async function () {
+            // @notice - Returned value of prizePool.tokens() is an array of the Tokens controlled by the Prize Pool (ie. Tickets, Sponsorship)
+            let [token] = await prizePool.tokens()
+
             const depositAmount = web3.utils.toWei('100', 'ether')
             let txReceipt1 = await mUSD.approve(PRIZE_POOL, depositAmount, { from: user1 });
 
             const to = PRIZE_POOL
-            const controlledToken = await prizePool.tokens()
+            const controlledToken = token
+            console.log(`\n=== controlledToken: ${ controlledToken } ===`)
             const referrer = user1
             let txReceipt2 = await prizePool.depositTo(to, depositAmount, controlledToken, referrer, { from: user1 })
         })
 
         it("Deposited-underlying asset (mUSD) should be able to withdraw with some interest", async function () {
+            // @notice - Returned value of prizePool.tokens() is an array of the Tokens controlled by the Prize Pool (ie. Tickets, Sponsorship)
+            let [token] = await prizePool.tokens()
+
             const balanceBefore = await mUSD.balanceOf(PRIZE_POOL);
 
             const fromAddr = PRIZE_POOL
             const withdrawAmount = web3.utils.toWei('1', 'ether')
-            const controlledToken = await prizePool.tokens()
+            const controlledToken = token
             const maximumExitFee = web3.utils.toWei('1000', 'ether')
-            let txReceipt2 = await prizePool.withdrawInstantlyFrom(fromAddr, depositAmount, controlledToken, maximumExitFee, { from: user1 })
+            let txReceipt2 = await prizePool.withdrawInstantlyFrom(fromAddr, withdrawAmount, controlledToken, maximumExitFee, { from: user1 })
             expect((await mUSD.balanceOf(PRIZE_POOL)) > balanceBefore)  /// [Note]: expect() is chai only?
         })
     })
