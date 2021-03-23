@@ -148,9 +148,12 @@ contract("MStableYieldSource", function(accounts) {
             prizeStrategy = await MultipleWinners.at(PRIZE_STORATEGY, { from: deployer })
         })
 
-        it("Transfer 1000 mUSD to user1", async () => {
-            const amount = web3.utils.toWei('1000', 'ether')
-            const txReceipt = await mUSD.transfer(user1, amount, { from: deployer })
+        it("mUSD balance of deployer should be 100000000", async () => {
+            const mUSDBalance = await mUSD.balanceOf(deployer)
+            console.log('\n=== mUSDBalance ===', String(web3.utils.fromWei(mUSDBalance, 'ether')))
+
+            //const amount = web3.utils.toWei('1000', 'ether')
+            //const txReceipt = await mUSD.transfer(deployer, amount, { from: deployer })
         })
     })
 
