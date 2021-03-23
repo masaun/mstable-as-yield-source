@@ -53,7 +53,7 @@ contract("MStableYieldSource", function(accounts) {
         /// [Note]: Retrieve an event log of eventName (via web3.js v1.0.0)
         let events = await contractInstance.getPastEvents(eventName, {
             filter: {},
-            fromBlock: 12092497,  /// [Note]: Please specify the latest blockNumber of mainnet as "fromBlock". Otherwise, it takes long time to retrieve the result of events
+            fromBlock: 12093507,  /// [Note]: Please specify the latest blockNumber of mainnet as "fromBlock". Otherwise, it takes long time to retrieve the result of events
             //fromBlock: 0,
             toBlock: 'latest'
         })
@@ -148,7 +148,7 @@ contract("MStableYieldSource", function(accounts) {
             prizeStrategy = await MultipleWinners.at(PRIZE_STORATEGY, { from: deployer })
         })
 
-        it("Transfer some mUSD", async () => {
+        it("Transfer 1000 mUSD to user1", async () => {
             const amount = web3.utils.toWei('1000', 'ether')
             const txReceipt = await mUSD.transfer(user1, amount, { from: deployer })
         })
@@ -166,7 +166,8 @@ contract("MStableYieldSource", function(accounts) {
             const depositAmount = web3.utils.toWei('100', 'ether')
             let txReceipt1 = await mUSD.approve(PRIZE_POOL, depositAmount, { from: user1 });
 
-            const to = PRIZE_POOL
+            const to = deployer
+            //const to = PRIZE_POOL
             const controlledToken = token
             console.log(`\n=== controlledToken: ${ controlledToken } ===`)
             const referrer = user1
@@ -179,7 +180,8 @@ contract("MStableYieldSource", function(accounts) {
 
             const balanceBefore = await mUSD.balanceOf(PRIZE_POOL);
 
-            const fromAddr = PRIZE_POOL
+            const fromAddr = deployer
+            //const fromAddr = PRIZE_POOL
             const withdrawAmount = web3.utils.toWei('1', 'ether')
             const controlledToken = token
             const maximumExitFee = web3.utils.toWei('1000', 'ether')
