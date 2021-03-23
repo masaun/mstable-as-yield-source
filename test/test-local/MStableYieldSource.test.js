@@ -8,8 +8,8 @@ const MUSDToken = artifacts.require("MUSDToken")
 const ISavingsContractV2 = artifacts.require("ISavingsContractV2")  /// [Note]: save contract also works as xmUSD
 const RNGMStableHarness = artifacts.require("RNGMStableHarness")
 const PoolWithMultipleWinnersBuilder = artifacts.require("PoolWithMultipleWinnersBuilder")
-//const PrizePool = artifacts.require("PrizePool")
-//const PrizeStrategy = artifacts.require("PrizeStrategy")
+const YieldSourcePrizePool = artifacts.require("YieldSourcePrizePool")  /// Used for the PrizePool
+const MultipleWinners = artifacts.require("MultipleWinners")            /// Used for the PrizeStorategy
 
 /// Import deployed-addresses
 const contractAddressList = require("../../migrations/addressesList/contractAddress/contractAddress.js")
@@ -32,6 +32,8 @@ contract("MStableYieldSource", function(accounts) {
     let save
     let rngMStableHarness
     let poolWithMultipleWinnersBuilder
+    let prizePool
+    let prizeStrategy
 
     /// Global variable for each contract addresses
     let MSTABLE_YIELD_SOURCE
@@ -54,7 +56,7 @@ contract("MStableYieldSource", function(accounts) {
             //fromBlock: 0,
             toBlock: 'latest'
         })
-        console.log(`\n=== [Event log]: ${ eventName } ===`, events[0].returnValues)
+        //console.log(`\n=== [Event log]: ${ eventName } ===`, events[0].returnValues)
         return events[0].returnValues
     } 
 
@@ -131,7 +133,49 @@ contract("MStableYieldSource", function(accounts) {
 
         it("Retrieve the 'YieldSourcePrizePoolWithMultipleWinnersCreated' event of createYieldSourceMultipleWinners() method", async () => {
             let event = await getEvents(poolWithMultipleWinnersBuilder, "YieldSourcePrizePoolWithMultipleWinnersCreated")
-            console.log('=== event of YieldSourcePrizePoolWithMultipleWinnersCreated ===', event)
+            console.log('=== [Event log]: YieldSourcePrizePoolWithMultipleWinnersCreated ===', event)
+
+            /// Assign each address from the event log retrieved above
+            PRIZE_POOL = event.prizePool
+            PRIZE_STORATEGY = event.prizeStrategy
+        })
+
+        it("Create instances of prizePool and prizeStrategy", async () => {
+            prizePool = await YieldSourcePrizePool.at(PRIZE_POOL, { from: deployer })
+            prizeStrategy = await MultipleWinners.at(PRIZE_STORATEGY, { from: deployer })
+        })
+
+        it("Transfer some mUSD", async () => {
+            const amount = web3.utils.toWei('1000', 'ether')
+            const txReceipt = await mUSD.transfer(user1, amount, { from: deployer })
         })
     })
+
+    describe("Process from deposit to withdraw by using the PrizePool and the PrizeStorategy", () => {
+        it("Token address should be mUSD's contract address", async function () {
+            assert.equal(await mStableYieldSource.token(), MUSD, "Token address should be mUSD's contract address")
+        })
+
+        it("Underlying asset (mUSD) should be deposited to the PrizePool", async function () {
+            const depositAmount = web3.utils.toWei('100', 'ether')
+            let txReceipt1 = await mUSD.approve(PRIZE_POOL, depositAmount, { from: user1 });
+
+            const to = PRIZE_POOL
+            const controlledToken = await prizePool.tokens()
+            const referrer = user1
+            let txReceipt2 = await prizePool.depositTo(to, depositAmount, controlledToken, referrer, { from: user1 })
+        })
+
+        it("Deposited-underlying asset (mUSD) should be able to withdraw with some interest", async function () {
+            const balanceBefore = await mUSD.balanceOf(PRIZE_POOL);
+
+            const fromAddr = PRIZE_POOL
+            const withdrawAmount = web3.utils.toWei('1', 'ether')
+            const controlledToken = await prizePool.tokens()
+            const maximumExitFee = web3.utils.toWei('1000', 'ether')
+            let txReceipt2 = await prizePool.withdrawInstantlyFrom(fromAddr, depositAmount, controlledToken, maximumExitFee, { from: user1 })
+            expect((await mUSD.balanceOf(PRIZE_POOL)) > balanceBefore)  /// [Note]: expect() is chai only?
+        })
+    })
+
 })
