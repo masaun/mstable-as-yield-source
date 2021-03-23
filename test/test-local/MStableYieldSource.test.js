@@ -149,11 +149,15 @@ contract("MStableYieldSource", function(accounts) {
         })
 
         it("mUSD balance of deployer should be 100000000", async () => {
-            const mUSDBalance = await mUSD.balanceOf(deployer)
-            console.log('\n=== mUSDBalance ===', String(web3.utils.fromWei(mUSDBalance, 'ether')))
+            const _mUSDBalance = await mUSD.balanceOf(deployer)
+            const mUSDBalance = String(web3.utils.fromWei(_mUSDBalance, 'ether'))
+            console.log('\n=== mUSDBalance ===', mUSDBalance)
+            assert.equal(mUSDBalance, "100000000", "mUSD balance of deployer should be 100000000")
+        })
 
-            //const amount = web3.utils.toWei('1000', 'ether')
-            //const txReceipt = await mUSD.transfer(deployer, amount, { from: deployer })
+        it("Transfer 1000 mUSD from deployer to user1", async () => {
+            const amount = web3.utils.toWei('1000', 'ether')
+            const txReceipt = await mUSD.transfer(user1, amount, { from: deployer })
         })
     })
 
@@ -162,7 +166,7 @@ contract("MStableYieldSource", function(accounts) {
             assert.equal(await mStableYieldSource.token(), MUSD, "Token address should be mUSD's contract address")
         })
 
-        it("Underlying asset (mUSD) should be deposited to the PrizePool", async function () {
+        it("Underlying asset (mUSD) should be deposited into the PrizePool", async function () {
             // @notice - Returned value of prizePool.tokens() is an array of the Tokens controlled by the Prize Pool (ie. Tickets, Sponsorship)
             let [token] = await prizePool.tokens()
 
@@ -177,7 +181,7 @@ contract("MStableYieldSource", function(accounts) {
             let txReceipt2 = await prizePool.depositTo(to, depositAmount, controlledToken, referrer, { from: user1 })
         })
 
-        it("Deposited-underlying asset (mUSD) should be able to withdraw with some interest", async function () {
+        it("Deposited-underlying asset (mUSD) should be withdrawn with some interest", async function () {
             // @notice - Returned value of prizePool.tokens() is an array of the Tokens controlled by the Prize Pool (ie. Tickets, Sponsorship)
             let [token] = await prizePool.tokens()
 
