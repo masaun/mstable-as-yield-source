@@ -52,7 +52,7 @@ contract("MStableYieldSource", function(accounts) {
         /// [Note]: Retrieve an event log of eventName (via web3.js v1.0.0)
         let events = await contractInstance.getPastEvents(eventName, {
             filter: {},
-            fromBlock: 12091818,  /// [Note]: Please adjust "fromBlock" as near as the latest blockNumber. Otherwise, it takes long time to retrieve the result of events
+            fromBlock: 12092362,  /// [Note]: Please specify the latest blockNumber (as long as you can) as "fromBlock". Otherwise, it takes long time to retrieve the result of events
             //fromBlock: 0,
             toBlock: 'latest'
         })
