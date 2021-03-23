@@ -6,7 +6,7 @@ const web3 = new Web3(new Web3.providers.WebsocketProvider('ws://localhost:8545'
 const MStableYieldSource = artifacts.require("MStableYieldSource")
 const MUSDToken = artifacts.require("MUSDToken")
 const ISavingsContractV2 = artifacts.require("ISavingsContractV2")  /// [Note]: save contract also works as xmUSD
-const RNGMStableHarness = artifacts.require("RNGMStableHarness")
+const RNGServiceMock = artifacts.require("RNGServiceMock")
 const PoolWithMultipleWinnersBuilder = artifacts.require("PoolWithMultipleWinnersBuilder")
 const YieldSourcePrizePool = artifacts.require("YieldSourcePrizePool")  /// Used for the PrizePool
 const MultipleWinners = artifacts.require("MultipleWinners")            /// Used for the PrizeStorategy
@@ -31,7 +31,7 @@ contract("MStableYieldSource", function(accounts) {
     let mStableYieldSource
     let mUSD
     let save
-    let rngMStableHarness
+    let rngService
     let poolWithMultipleWinnersBuilder
     let prizePool
     let prizeStrategy
@@ -41,7 +41,7 @@ contract("MStableYieldSource", function(accounts) {
     let MUSD
     let SAVE = contractAddressList["Mainnet"]["mStable"]["mUSD SAVE (imUSD)"]
     let NEXUS = contractAddressList["Mainnet"]["mStable"]["Nexus"]
-    let RNG_MSTABLE_HARNESS
+    let RNG_SERVICE
     let POOL_WITH_MULTIPLE_WINNERS_BUILDER = contractAddressList["Mainnet"]["PoolTogether"]["PoolWithMultipleWinnersBuilder"]
 
     /// Global parameters for PoolTogether
@@ -79,9 +79,9 @@ contract("MStableYieldSource", function(accounts) {
             // let event = await getEvents(mStableYieldSource, "ImUSDYieldSourceInitialized")
         })
 
-        it("Deploy the RNGMStableHarness contract instance", async () => {
-            rngMStableHarness = await RNGMStableHarness.new({ from: deployer })
-            RNG_MSTABLE_HARNESS = rngMStableHarness.address
+        it("Deploy the RNGServiceMock contract instance", async () => {
+            rngService = await RNGServiceMock.new({ from: deployer })
+            RNG_SERVICE = rngService.address
         })
 
         it("[Log]: Deployed-contracts addresses", async () => {
@@ -103,7 +103,7 @@ contract("MStableYieldSource", function(accounts) {
         it("Setup parameter of multipleWinners", async () => {
             multipleWinnersConfig = {
                 proxyAdmin: "0x0000000000000000000000000000000000000000",
-                rngService: RNG_MSTABLE_HARNESS,
+                rngService: RNG_SERVICE,
                 prizePeriodStart: 0,
                 prizePeriodSeconds: 100,
                 ticketName: "mUSD Pass",
