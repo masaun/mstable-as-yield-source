@@ -10,6 +10,7 @@
 
 ## 【Workflow】
 - Diagram of workflow  
+![【Diagram】mStable's mAsset (mUSD) as a yield source for PoolTogether](https://user-images.githubusercontent.com/19357502/113303612-37e4e280-933c-11eb-9b6d-9a96837ec6a2.jpg)
 
 &nbsp;
 
