@@ -1,9 +1,8 @@
-# LP Token as a yield source for PoolTogether🎫🎟
+# mStable's mAsset (mUSD) as a yield source for PoolTogether🎫 🎟
 
 ***
-## 【Introduction of the LP Token as a yield source for PoolTogether🎫🎟】
-- This is a smart contract that: 
-  - Custom Prize Strategy for PoolTogether
+## 【Introduction of the mStable's mAsset (mUSD) as a yield source for PoolTogether🎫 🎟】
+- This is a smart contract that mStable's mAsset (mUSD) as a yield source for PoolTogether.
 
 &nbsp;
 
@@ -54,10 +53,10 @@ $ ganache-cli -d --fork https://mainnet.infura.io/v3/{YOUR INFURA KEY}@{BLOCK_NU
 
 <br>
 
-- 2: Execute test of the smart-contracts (on the local)
-  - Test for the MStableYieldSource contract
-    `$ npm run test:MStableYieldSource`
-    ($ truffle test ./test/test-local/MStableYieldSource.test.js)
+- 2: Execute test of the smart-contracts (on the local)  
+  - Test for the MStableYieldSource contract  
+    `$ npm run test:MStableYieldSource`  
+    ($ truffle test ./test/test-local/MStableYieldSource.test.js)  
 
 <br>
 
@@ -66,3 +65,25 @@ $ ganache-cli -d --fork https://mainnet.infura.io/v3/{YOUR INFURA KEY}@{BLOCK_NU
 
 ## 【References】
 - PoolTogether
+  - Doc: https://docs.pooltogether.com/protocol/prize-strategy
+  - Workshop: https://www.youtube.com/watch?v=sTsMt0zdOHY
+  - GR9 Prize：https://github.com/pooltogether/Gitcoin_Grants_Round_9_Bounties
+
+<br>
+
+- mStable
+  - Doc：https://docs.mstable.org/developers/introduction  
+  - idea：https://docs.mstable.org/developers/introduction#bb4f  
+  - Saving：https://docs.mstable.org/mstable-assets/massets/native-interest-rate 
+  - Live dApp (Ropsten, Kovan)：https://docs.mstable.org/developers/introduction#live-apps 
+
+<br>
+
+- Deployed-addresses on Mainnet
+  - PoolTogether：https://docs.pooltogether.com/networks/ethereum#builders
+  - mStable：https://docs.mstable.org/developers/deployed-addresses
+
+<br>
+
+- GR9 Prize in Gitcoin
+https://gitcoin.co/issue/pooltogether/Gitcoin_Grants_Round_9_Bounties/1/100025059
